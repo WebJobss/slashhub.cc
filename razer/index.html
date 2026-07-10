@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>短期專案行政協作人員招募 | Project Campaign Studio</title>
+<style>
+  :root{
+    --bg: #0b0b0b;
+    --bg-soft: #131313;
+    --panel: #161616;
+    --green: #00ff66;
+    --green-dim: #00cc52;
+    --text: #eaeaea;
+    --text-dim: #9a9a9a;
+    --line: #262626;
+    --mono: 'JetBrains Mono', 'Courier New', monospace;
+    --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin:0; padding:0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* 背景格線效果 */
+  body::before{
+    content:"";
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,255,102,0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,255,102,0.035) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+    z-index: 0;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 90%);
+  }
+
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 13px;
+    letter-spacing: 3px;
+    color: var(--green);
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:6px; height:6px;
+    background: var(--green);
+    border-radius:50%;
+    box-shadow: 0 0 8px var(--green);
+    animation: blink 1.6s infinite;
+  }
+  @keyframes blink { 50% { opacity: 0.25; } }
+
+  /* ===== HERO ===== */
+  .hero {
+    min-height: 92vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 100px 24px 80px;
+    position: relative;
+  }
+
+  .hero h1 {
+    font-size: clamp(32px, 6vw, 58px);
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin: 22px 0 20px;
+    line-height: 1.25;
+  }
+
+  .hero h1 .accent {
+    color: var(--green);
+    text-shadow: 0 0 24px rgba(0,255,102,0.5);
+  }
+
+  .hero .arrow {
+    display: inline-block;
+    color: var(--green);
+    margin: 0 6px;
+  }
+
+  .hero p.sub {
+    font-size: clamp(15px, 2vw, 18px);
+    color: var(--text-dim);
+    max-width: 560px;
+    margin-bottom: 44px;
+  }
+
+  /* ===== CTA BUTTON ===== */
+  .cta-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--green);
+    color: #0b0b0b;
+    font-weight: 700;
+    font-size: 17px;
+    padding: 18px 40px;
+    border-radius: 8px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 0 20px rgba(0,255,102,0.55), 0 0 60px rgba(0,255,102,0.15);
+    transition: transform .2s ease, box-shadow .2s ease;
+    font-family: var(--sans);
+  }
+  .cta-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 30px rgba(0,255,102,0.8), 0 0 90px rgba(0,255,102,0.25);
+  }
+  .cta-btn:active { transform: translateY(0); }
+  .cta-btn:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 3px;
+  }
+
+  .cta-note {
+    margin-top: 16px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-dim);
+    letter-spacing: 0.5px;
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 32px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 2px;
+  }
+
+  /* ===== SECTION 共用 ===== */
+  section {
+    padding: 90px 0;
+    position: relative;
+    z-index: 1;
+    border-top: 1px solid var(--line);
+  }
+
+  .section-head {
+    margin-bottom: 48px;
+  }
+  .section-head h2 {
+    font-size: clamp(24px, 4vw, 34px);
+    font-weight: 800;
+    margin-top: 14px;
+    letter-spacing: -0.5px;
+  }
+
+  /* ===== 任務列表 ===== */
+  .task-list {
+    display: grid;
+    gap: 16px;
+  }
+  .task-item {
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 22px 24px;
+    transition: border-color .2s ease, background .2s ease;
+  }
+  .task-item:hover {
+    border-color: var(--green-dim);
+    background: #171d17;
+  }
+  .task-num {
+    font-family: var(--mono);
+    color: var(--green);
+    font-size: 14px;
+    border: 1px solid var(--green-dim);
+    border-radius: 50%;
+    width: 30px; height: 30px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .task-item p { color: var(--text); font-size: 15.5px; }
+
+  /* ===== 應徵流程 ===== */
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .step-card {
+    background: linear-gradient(180deg, var(--panel), #101010);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 30px 24px;
+    position: relative;
+  }
+  .step-card .step-tag {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--green);
+    letter-spacing: 2px;
+  }
+  .step-card h3 {
+    font-size: 19px;
+    margin: 12px 0 10px;
+  }
+  .step-card p {
+    color: var(--text-dim);
+    font-size: 14.5px;
+  }
+  .step-line {
+    display:none;
+  }
+
+  @media (min-width: 768px){
+    .steps { position: relative; }
+    .step-card:not(:last-child)::after{
+      content:"→";
+      position: absolute;
+      right: -22px;
+      top: 30px;
+      color: var(--green-dim);
+      font-size: 20px;
+    }
+  }
+
+  /* ===== FAQ ===== */
+  .faq-item {
+    border-bottom: 1px solid var(--line);
+    padding: 24px 0;
+  }
+  .faq-q {
+    display: flex;
+    gap: 12px;
+    font-weight: 700;
+    font-size: 16.5px;
+    color: var(--green);
+    margin-bottom: 10px;
+  }
+  .faq-a {
+    color: var(--text-dim);
+    font-size: 15px;
+    padding-left: 28px;
+  }
+
+  /* ===== 頁尾 CTA ===== */
+  .final-cta {
+    text-align: center;
+    padding: 100px 24px;
+    border-top: 1px solid var(--line);
+  }
+  .final-cta h2 {
+    font-size: clamp(22px, 4vw, 30px);
+    margin-bottom: 28px;
+    font-weight: 800;
+  }
+
+  footer {
+    text-align: center;
+    padding: 30px 24px 40px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: #555;
+    border-top: 1px solid var(--line);
+  }
+
+  @media (max-width: 700px){
+    .steps { grid-template-columns: 1fr; }
+    section { padding: 64px 0; }
+    .hero { min-height: auto; padding: 90px 20px 70px; }
+  }
+
+  /* ===== 電競裝飾元素 (原創繪製，非任何品牌素材) ===== */
+  .gear-decor {
+    position: absolute;
+    z-index: 0;
+    opacity: 0.5;
+    pointer-events: none;
+  }
+  .hero .gear-mouse {
+    right: 4%;
+    top: 14%;
+    width: 190px;
+    animation: float 5s ease-in-out infinite;
+  }
+  .hero .gear-keycaps {
+    left: 3%;
+    bottom: 8%;
+    width: 220px;
+    animation: float 6s ease-in-out infinite reverse;
+  }
+  @keyframes float {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-14px); }
+  }
+  @media (max-width: 900px){
+    .gear-decor { display: none; }
+  }
+
+  .keycap-strip {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 28px;
+  }
+  .keycap {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--green);
+    border: 1px solid var(--green-dim);
+    background: #0f150f;
+    border-radius: 4px;
+    padding: 6px 10px;
+    box-shadow: 0 0 8px rgba(0,255,102,0.25), inset 0 0 6px rgba(0,255,102,0.08);
+  }
+
+  .rgb-divider {
+    height: 2px;
+    width: 100%;
+    background: linear-gradient(90deg, transparent, var(--green) 50%, transparent);
+    opacity: 0.6;
+    margin: 0 auto;
+  }
+
+  .task-item .gear-icon {
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+    color: var(--green);
+  }
+</style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <section class="hero" style="border-top:none;">
+
+    <!-- 原創電競滑鼠剪影裝飾 -->
+    <svg class="gear-decor gear-mouse" viewBox="0 0 120 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M60 4C30 4 12 28 12 66V134C12 172 30 196 60 196C90 196 108 172 108 134V66C108 28 90 4 60 4Z" stroke="#00ff66" stroke-width="2" opacity="0.5"/>
+      <line x1="60" y1="4" x2="60" y2="80" stroke="#00ff66" stroke-width="2" opacity="0.5"/>
+      <line x1="12" y1="66" x2="108" y2="66" stroke="#00ff66" stroke-width="1.4" opacity="0.35"/>
+      <circle cx="60" cy="110" r="10" stroke="#00ff66" stroke-width="1.6" opacity="0.4"/>
+    </svg>
+
+    <!-- 原創機械鍵盤按鍵剪影裝飾 -->
+    <svg class="gear-decor gear-keycaps" viewBox="0 0 240 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g stroke="#00ff66" stroke-width="1.6" opacity="0.45">
+        <rect x="4" y="4" width="46" height="46" rx="6"/>
+        <rect x="58" y="4" width="46" height="46" rx="6"/>
+        <rect x="112" y="4" width="46" height="46" rx="6"/>
+        <rect x="31" y="58" width="46" height="46" rx="6"/>
+        <rect x="85" y="58" width="46" height="46" rx="6"/>
+        <rect x="139" y="58" width="46" height="46" rx="6"/>
+      </g>
+    </svg>
+
+    <div class="container">
+      <span class="eyebrow">NOW RECRUITING · 招募中</span>
+      <h1>
+        電競專案企劃 <span class="arrow">➔</span>
+        <span class="accent">短期行政協作夥伴</span> 熱烈招募中！
+      </h1>
+      <p class="sub">利用空閒時間彈性接案、遠端協作。適合學生、兼職與自由工作者，提供完善線上系統教學。</p>
+      <a href="#" class="cta-btn">💼 立即線上應徵 / 諮詢職缺</a>
+      <div class="cta-note">// 免出門面試・線上完成登記・專人一對一說明</div>
+
+      <div class="keycap-strip">
+        <span class="keycap">RGB SYNC</span>
+        <span class="keycap">遠端協作</span>
+        <span class="keycap">彈性排班</span>
+        <span class="keycap">線上教學</span>
+      </div>
+    </div>
+    <div class="scroll-hint">SCROLL ↓</div>
+  </section>
+
+  <!-- 工作內容 -->
+  <section>
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">DAILY TASKS</span>
+        <h2>專案日常任務</h2>
+        <div class="rgb-divider" style="margin-top:20px;"></div>
+      </div>
+      <div class="task-list">
+        <div class="task-item">
+          <span class="task-num">01</span>
+          <p>負責專案活動的數據資料輸入與 Excel 欄位建檔</p>
+        </div>
+        <div class="task-item">
+          <span class="task-num">02</span>
+          <p>核對與彙整活動參與者名單</p>
+        </div>
+        <div class="task-item">
+          <span class="task-num">03</span>
+          <p>協助專案進度表更新與日常文書處理</p>
+        </div>
+        <div class="task-item">
+          <span class="task-num">04</span>
+          <p>追蹤並登記活動贈品寄送狀態</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 應徵流程 -->
+  <section>
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">HOW IT WORKS</span>
+        <h2>應徵流程說明</h2>
+      </div>
+      <div class="steps">
+        <div class="step-card">
+          <span class="step-tag">STEP 1</span>
+          <h3>線上登記</h3>
+          <p>點選本頁按鈕，與線上專案窗口取得聯繫。</p>
+        </div>
+        <div class="step-card">
+          <span class="step-tag">STEP 2</span>
+          <h3>職缺諮詢</h3>
+          <p>索取詳細的專案簡介與排班說明。</p>
+        </div>
+        <div class="step-card">
+          <span class="step-tag">STEP 3</span>
+          <h3>確認合作</h3>
+          <p>雙方確認意願後，即可快速安排線上說明並上任。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section>
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">FAQ</span>
+        <h2>常見問答</h2>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">Q. 這是一份長期工作嗎？</div>
+        <div class="faq-a">A. 本職缺為配合本季活動的短期專案，表現優異者未來可優先獲得長期合作機會。</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Q. 工作時間可以彈性調整嗎？</div>
+        <div class="faq-a">A. 可以，本專案採取成果與進度回報制，只要在指定時間內完成交辦的資料，工作時間非常自由。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 頁尾 CTA -->
+  <section class="final-cta">
+    <div class="container">
+      <h2>準備好加入我們了嗎？</h2>
+      <a href="#" class="cta-btn">📱 立即聯繫線上人資窗口</a>
+    </div>
+  </section>
+
+  <footer>
+    © 2026 Project Campaign Studio. All rights reserved.
+  </footer>
+
+</body>
+</html>
